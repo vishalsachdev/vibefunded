@@ -10,7 +10,7 @@ st.set_page_config(
     page_title="Realtime OSS Funding via Royalties",
     page_icon="💰",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 TOKENS = {
@@ -152,42 +152,9 @@ with st.sidebar:
         step=1000,
         help="Filter tokens with 24h volume greater than this amount"
     )
-    
-    st.divider()
-    
-    st.subheader("Add Custom Ticker")
-    custom_ticker = st.text_input("Ticker symbol (without $)", placeholder="e.g., BONK")
-    add_custom = st.button("Add Ticker")
-    
-    if "custom_tickers" not in st.session_state:
-        st.session_state.custom_tickers = {}
-    
-    if add_custom and custom_ticker:
-        custom_ticker = custom_ticker.upper().strip()
-        if custom_ticker not in TOKENS and custom_ticker not in st.session_state.custom_tickers:
-            st.session_state.custom_tickers[custom_ticker] = {
-                "name": custom_ticker,
-                "creator": "Custom",
-                "description": "User-added token"
-            }
-            st.success(f"Added ${custom_ticker}")
-        elif custom_ticker in TOKENS:
-            st.warning(f"${custom_ticker} already exists in the default list")
-        else:
-            st.warning(f"${custom_ticker} already added")
-    
-    st.divider()
-    
-    st.subheader("Case Study Notes")
-    st.markdown("""
-    **Key Insights:**
-    
-    - Bags.fm enables OSS creators to launch memecoins with built-in royalty mechanisms
-    - Trading volume directly translates to creator funding via royalties
-    - This model disrupts traditional grant/VC funding for open source
-    - Network effects drive sustainable, perpetual revenue for maintainers
-    - "Vibe-coded" projects combine AI tools with community-driven funding
-    """)
+
+if "custom_tickers" not in st.session_state:
+    st.session_state.custom_tickers = {}
 
 if refresh_interval:
     count = st_autorefresh(interval=refresh_interval, limit=None, key="data_refresh")
@@ -459,6 +426,18 @@ if len(chart_df) > 0:
     st.plotly_chart(fig_change, use_container_width=True)
 else:
     st.info("No active tokens with volume data to display charts.")
+
+st.markdown("---")
+st.subheader("Case Study Notes")
+st.markdown("""
+**Key Insights:**
+
+- **Bags.fm enables OSS creators to launch memecoins** with built-in royalty mechanisms
+- **Trading volume directly translates to creator funding** via royalties
+- **This model disrupts traditional grant/VC funding** for open source
+- **Network effects drive sustainable, perpetual revenue** for maintainers
+- **"Vibe-coded" projects** combine AI tools with community-driven funding
+""")
 
 st.markdown("---")
 st.caption("""
