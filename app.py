@@ -190,6 +190,17 @@ Visualizing how Bags.fm's royalty model turns speculative trading into sustainab
 for vibe-coded open source and AI projects (as of Jan 2026).
 """)
 
+with st.expander("Case Study Notes", expanded=False):
+    st.markdown("""
+**Key Insights:**
+
+- **Bags.fm enables OSS creators to launch memecoins** with built-in royalty mechanisms
+- **Trading volume directly translates to creator funding** via royalties
+- **This model disrupts traditional grant/VC funding** for open source
+- **Network effects drive sustainable, perpetual revenue** for maintainers
+- **"Vibe-coded" projects** combine AI tools with community-driven funding
+""")
+
 header_cols = st.columns([3, 1])
 with header_cols[1]:
     if st.button("🔄 Refresh Now"):
@@ -458,18 +469,6 @@ if len(chart_df) > 0:
     st.plotly_chart(fig_change, use_container_width=True)
 else:
     st.info("No active tokens with volume data to display charts.")
-
-st.markdown("---")
-st.subheader("Case Study Notes")
-st.markdown("""
-**Key Insights:**
-
-- **Bags.fm enables OSS creators to launch memecoins** with built-in royalty mechanisms
-- **Trading volume directly translates to creator funding** via royalties
-- **This model disrupts traditional grant/VC funding** for open source
-- **Network effects drive sustainable, perpetual revenue** for maintainers
-- **"Vibe-coded" projects** combine AI tools with community-driven funding
-""")
 
 st.markdown("---")
 st.caption("""
