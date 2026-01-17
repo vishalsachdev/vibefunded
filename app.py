@@ -35,7 +35,7 @@ TOKENS = {
         "creator": "Claude Code Community",
         "twitter": "",
         "twitter_handle": "",
-        "project_url": "https://github.com/anthropics/anthropic-cookbook",
+        "project_url": "https://github.com/glittercowboy/get-shit-done",
         "description": "Vibe-coding automation tool; royalties provide risk-free OSS maintenance funding.",
         "pair_address": "dwudwjvan7bzkw9zwlbyv6kspdlvhwzrqy6ebk8xzxkv"
     }
