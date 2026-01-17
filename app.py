@@ -20,6 +20,7 @@ TOKENS = {
         "social": "https://x.com/SteveYegge",
         "social_handle": "@SteveYegge",
         "project_url": "https://github.com/steveyegge/gastown",
+        "bags_url": "https://bags.fm/7pskt3A1Zsjhngazam7vHWjWHnfgiRump916Xj7ABAGS",
         "description": "Multi-agent AI orchestrator; royalties fund ongoing development of complex agent systems."
     },
     "RALPH": {
@@ -28,6 +29,7 @@ TOKENS = {
         "social": "https://x.com/geoffreyhuntley",
         "social_handle": "@geoffreyhuntley",
         "project_url": "https://github.com/nicholasgriffintn/ralph-does-things",
+        "bags_url": "https://bags.fm/CxWPdDBqxVo3fnTMRTvNuSrd4gkp78udSrFvkVDBAGS",
         "description": "Autonomous AI coding loops; royalties support open AI research and esoteric experiments."
     },
     "GSD": {
@@ -36,10 +38,34 @@ TOKENS = {
         "social": "https://www.youtube.com/@tachesteaches",
         "social_handle": "@tachesteaches",
         "project_url": "https://github.com/glittercowboy/get-shit-done",
+        "bags_url": "https://bags.fm/8116V1BW9zaXUM6pVhWVaAduKrLcEBi3RGXedKTrBAGS",
         "description": "Vibe-coding automation tool; royalties provide risk-free OSS maintenance funding.",
         "pair_address": "dwudwjvan7bzkw9zwlbyv6kspdlvhwzrqy6ebk8xzxkv"
     }
 }
+
+import re
+
+@st.cache_data(ttl=60)
+def fetch_bags_earnings(bags_url):
+    try:
+        response = requests.get(bags_url, timeout=10)
+        response.raise_for_status()
+        content = response.text
+        
+        match = re.search(r'earnings\s*\$\s*([\d,]+\.?\d*)', content, re.IGNORECASE)
+        if match:
+            earnings_str = match.group(1).replace(',', '')
+            return float(earnings_str)
+        
+        match = re.search(r'\$\s*([\d,]+\.?\d*)\s*(?:earnings|earned)', content, re.IGNORECASE)
+        if match:
+            earnings_str = match.group(1).replace(',', '')
+            return float(earnings_str)
+        
+        return None
+    except Exception as e:
+        return None
 
 @st.cache_data(ttl=60)
 def fetch_dexscreener_data(ticker, pair_address=None):
@@ -191,6 +217,9 @@ with st.spinner("Fetching live data from DexScreener..."):
         pair_address = info.get("pair_address")
         pair = fetch_dexscreener_data(ticker, pair_address)
         
+        bags_url = info.get("bags_url", "")
+        earnings = fetch_bags_earnings(bags_url) if bags_url else None
+        
         if pair:
             price_changes = pair.get("priceChange", {})
             token_data.append({
@@ -200,6 +229,8 @@ with st.spinner("Fetching live data from DexScreener..."):
                 "social": info.get("social", ""),
                 "social_handle": info.get("social_handle", ""),
                 "project_url": info.get("project_url", ""),
+                "bags_url": bags_url,
+                "earnings": earnings if earnings else 0,
                 "description": info["description"],
                 "price": float(pair.get("priceUsd", 0) or 0),
                 "fdv": float(pair.get("fdv", 0) or 0),
@@ -222,6 +253,8 @@ with st.spinner("Fetching live data from DexScreener..."):
                 "social": info.get("social", ""),
                 "social_handle": info.get("social_handle", ""),
                 "project_url": info.get("project_url", ""),
+                "bags_url": bags_url,
+                "earnings": earnings if earnings else 0,
                 "description": info["description"],
                 "price": 0,
                 "fdv": 0,
@@ -289,6 +322,7 @@ if len(df_filtered) > 0:
     display_df["24h Volume"] = display_df["volume_24h"].apply(lambda x: format_number(x))
     display_df["Liquidity"] = display_df["liquidity"].apply(lambda x: format_number(x))
     display_df["Status"] = display_df["active"].apply(lambda x: "Active" if x else "Inactive/No Data")
+    display_df["Earnings"] = display_df["earnings"].apply(lambda x: format_number(x) if x > 0 else "N/A")
     
     def format_change_colored(change):
         if change is None or change == 0:
@@ -301,9 +335,9 @@ if len(df_filtered) > 0:
     display_df["6h"] = display_df["change_6h"].apply(format_change_colored)
     display_df["24h"] = display_df["change_24h"].apply(format_change_colored)
     
-    table_df = display_df[["ticker", "url", "name", "project_url", "creator", "social", "Price", "FDV/MC", "24h Volume", 
+    table_df = display_df[["ticker", "url", "name", "project_url", "creator", "social", "bags_url", "Earnings", "Price", "FDV/MC", "24h Volume", 
                             "Liquidity", "5m", "1h", "6h", "24h", "pair_age", "Status"]].copy()
-    table_df.columns = ["Ticker", "DexScreener", "Project Name", "Project", "Creator", "Social", "Price", "FDV/MC", "24h Volume", 
+    table_df.columns = ["Ticker", "DexScreener", "Project Name", "Project", "Creator", "Social", "Bags.fm", "Earnings", "Price", "FDV/MC", "24h Volume", 
                         "Liquidity", "5m", "1h", "6h", "24h", "Pair Age", "Status"]
     
     st.caption("Select tokens to compare in charts below:")
@@ -328,6 +362,8 @@ if len(df_filtered) > 0:
             "Project": st.column_config.LinkColumn("Project", display_text="View", width="small"),
             "Creator": st.column_config.TextColumn("Creator", width="small"),
             "Social": st.column_config.LinkColumn("Social", display_text="View", width="small"),
+            "Bags.fm": st.column_config.LinkColumn("Bags.fm", display_text="View", width="small"),
+            "Earnings": st.column_config.TextColumn("Earnings", width="small"),
             "Price": st.column_config.TextColumn("Price", width="small"),
             "FDV/MC": st.column_config.TextColumn("FDV/MC", width="small"),
             "24h Volume": st.column_config.TextColumn("24h Volume", width="small"),
