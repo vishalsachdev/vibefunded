@@ -36,13 +36,23 @@ TOKENS = {
         "twitter": "",
         "twitter_handle": "",
         "project_url": "https://github.com/anthropics/anthropic-cookbook",
-        "description": "Vibe-coding automation tool; royalties provide risk-free OSS maintenance funding."
+        "description": "Vibe-coding automation tool; royalties provide risk-free OSS maintenance funding.",
+        "pair_address": "3qwurggzrnibzcxjo5jw3oncw2fw9u9wdhepg2feavdc"
     }
 }
 
 @st.cache_data(ttl=60)
-def fetch_dexscreener_data(ticker):
+def fetch_dexscreener_data(ticker, pair_address=None):
     try:
+        if pair_address:
+            url = f"https://api.dexscreener.com/latest/dex/pairs/solana/{pair_address}"
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            if data.get("pair"):
+                return data["pair"]
+            return None
+        
         url = f"https://api.dexscreener.com/latest/dex/search?q={ticker}"
         response = requests.get(url, timeout=10)
         response.raise_for_status()
@@ -178,7 +188,8 @@ with st.spinner("Fetching live data from DexScreener..."):
     token_data = []
     
     for ticker, info in all_tokens.items():
-        pair = fetch_dexscreener_data(ticker)
+        pair_address = info.get("pair_address")
+        pair = fetch_dexscreener_data(ticker, pair_address)
         
         if pair:
             price_changes = pair.get("priceChange", {})
