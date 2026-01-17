@@ -299,6 +299,9 @@ with kpi_cols[4]:
 st.markdown("---")
 st.subheader("Token Overview")
 
+if "selected_tokens" not in st.session_state:
+    st.session_state.selected_tokens = []
+
 if len(df_filtered) > 0:
     display_df = df_filtered.copy()
     
@@ -306,16 +309,34 @@ if len(df_filtered) > 0:
     display_df["FDV/MC"] = display_df["fdv"].apply(lambda x: format_number(x))
     display_df["24h Volume"] = display_df["volume_24h"].apply(lambda x: format_number(x))
     display_df["Liquidity"] = display_df["liquidity"].apply(lambda x: format_number(x))
-    display_df["5m"] = display_df["change_5m"].apply(format_change)
-    display_df["1h"] = display_df["change_1h"].apply(format_change)
-    display_df["6h"] = display_df["change_6h"].apply(format_change)
-    display_df["24h"] = display_df["change_24h"].apply(format_change)
     display_df["Status"] = display_df["active"].apply(lambda x: "Active" if x else "Inactive/No Data")
     
-    table_df = display_df[["ticker", "name", "creator", "Price", "FDV/MC", "24h Volume", 
+    def format_change_colored(change):
+        if change is None or change == 0:
+            return "0.00%"
+        sign = "+" if change >= 0 else ""
+        return f"{sign}{change:.2f}%"
+    
+    display_df["5m"] = display_df["change_5m"].apply(format_change_colored)
+    display_df["1h"] = display_df["change_1h"].apply(format_change_colored)
+    display_df["6h"] = display_df["change_6h"].apply(format_change_colored)
+    display_df["24h"] = display_df["change_24h"].apply(format_change_colored)
+    
+    table_df = display_df[["ticker", "url", "name", "creator", "Price", "FDV/MC", "24h Volume", 
                             "Liquidity", "5m", "1h", "6h", "24h", "pair_age", "Status"]].copy()
-    table_df.columns = ["Ticker", "Project Name", "Creator", "Price", "FDV/MC", "24h Volume", 
+    table_df.columns = ["Ticker", "URL", "Project Name", "Creator", "Price", "FDV/MC", "24h Volume", 
                         "Liquidity", "5m", "1h", "6h", "24h", "Pair Age", "Status"]
+    
+    st.caption("Select tokens to compare in charts below:")
+    
+    token_options = display_df["ticker"].tolist()
+    selected = st.multiselect(
+        "Select tokens for chart comparison",
+        options=token_options,
+        default=token_options[:3] if len(token_options) >= 3 else token_options,
+        key="token_selector"
+    )
+    st.session_state.selected_tokens = selected
     
     st.dataframe(
         table_df,
@@ -323,6 +344,7 @@ if len(df_filtered) > 0:
         hide_index=True,
         column_config={
             "Ticker": st.column_config.TextColumn("Ticker", width="small"),
+            "URL": st.column_config.LinkColumn("DexScreener", display_text="View", width="small"),
             "Project Name": st.column_config.TextColumn("Project Name", width="medium"),
             "Creator": st.column_config.TextColumn("Creator", width="medium"),
             "Price": st.column_config.TextColumn("Price", width="small"),
@@ -338,17 +360,34 @@ if len(df_filtered) > 0:
         }
     )
     
-    with st.expander("View DexScreener Links"):
-        for _, row in df_filtered[df_filtered["active"]].iterrows():
-            if row["url"]:
-                st.markdown(f"[{row['ticker']} - {row['name']}]({row['url']})")
+    st.markdown("**Price Change Legend:** Green = positive, Red = negative")
+    change_cols = st.columns(8)
+    for i, (_, row) in enumerate(display_df.iterrows()):
+        if i >= 8:
+            break
+        with change_cols[i % 8]:
+            color_5m = "#22c55e" if row["change_5m"] >= 0 else "#ef4444"
+            color_1h = "#22c55e" if row["change_1h"] >= 0 else "#ef4444"
+            color_6h = "#22c55e" if row["change_6h"] >= 0 else "#ef4444"
+            color_24h = "#22c55e" if row["change_24h"] >= 0 else "#ef4444"
+            st.markdown(f"""
+            **{row['ticker']}**  
+            <span style="color:{color_5m}">5m: {row['5m']}</span>  
+            <span style="color:{color_1h}">1h: {row['1h']}</span>  
+            <span style="color:{color_6h}">6h: {row['6h']}</span>  
+            <span style="color:{color_24h}">24h: {row['24h']}</span>
+            """, unsafe_allow_html=True)
 else:
     st.warning("No tokens match the current filter criteria.")
 
 st.markdown("---")
 st.subheader("Volume Analysis")
 
-chart_df = active_df[active_df["volume_24h"] > 0].copy()
+selected_tokens = st.session_state.get("selected_tokens", [])
+if selected_tokens:
+    chart_df = active_df[(active_df["volume_24h"] > 0) & (active_df["ticker"].isin(selected_tokens))].copy()
+else:
+    chart_df = active_df[active_df["volume_24h"] > 0].copy()
 
 if len(chart_df) > 0:
     chart_cols = st.columns(2)
