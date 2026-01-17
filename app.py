@@ -16,42 +16,66 @@ st.set_page_config(
 TOKENS = {
     "GAS": {
         "name": "Gastown",
-        "creator": "Steve Yegge (@SteveYegge)",
+        "creator": "Steve Yegge",
+        "twitter": "https://x.com/SteveYegge",
+        "twitter_handle": "@SteveYegge",
+        "project_url": "https://github.com/steveyegge/gastown",
         "description": "Multi-agent AI orchestrator; royalties fund ongoing development of complex agent systems."
     },
     "RALPH": {
         "name": "Ralph Wiggum Technique",
-        "creator": "Geoffrey Huntley (@geoffhuntley)",
+        "creator": "Geoffrey Huntley",
+        "twitter": "https://x.com/geoffreyhuntley",
+        "twitter_handle": "@geoffreyhuntley",
+        "project_url": "https://github.com/nicholasgriffintn/ralph-does-things",
         "description": "Autonomous AI coding loops; royalties support open AI research and esoteric experiments."
     },
     "TETSUO": {
         "name": "Tetsuo Corp / solprivacy",
-        "creator": "@tetsuoai / @tetsuoarena",
+        "creator": "Tetsuo AI",
+        "twitter": "https://x.com/tetsuoai",
+        "twitter_handle": "@tetsuoai",
+        "project_url": "https://tetsuo.ai",
         "description": "Open-source Solana privacy tools and AI agents; funds hardware/robotics experiments."
     },
     "GSD": {
         "name": "Get Shit Done",
-        "creator": "Anonymous/Claude Code community",
+        "creator": "Claude Code Community",
+        "twitter": "",
+        "twitter_handle": "",
+        "project_url": "https://github.com/anthropics/anthropic-cookbook",
         "description": "Vibe-coding automation tool; royalties provide risk-free OSS maintenance funding."
     },
     "TEXTUAL": {
         "name": "Textual",
-        "creator": "Will McGugan (@willmcgugan)",
+        "creator": "Will McGugan",
+        "twitter": "https://x.com/willmcgugan",
+        "twitter_handle": "@willmcgugan",
+        "project_url": "https://github.com/Textualize/textual",
         "description": "Python TUI framework; royalties support long-term maintenance of widely used OSS library."
     },
     "SOLPRIV": {
         "name": "solprivacy",
         "creator": "Tetsuo Corp",
+        "twitter": "https://x.com/tetsuoai",
+        "twitter_handle": "@tetsuoai",
+        "project_url": "https://tetsuo.ai",
         "description": "AI-powered wallet privacy scanner; funds on-chain privacy tooling."
     },
     "FACTORY": {
         "name": "Factory",
-        "creator": "Bags ecosystem AI builders",
+        "creator": "Bags Ecosystem",
+        "twitter": "https://x.com/bags",
+        "twitter_handle": "@bags",
+        "project_url": "https://bags.fm",
         "description": "Natural language to app prototyping platform; royalties accelerate full-stack AI builds."
     },
     "OSS": {
         "name": "Meta OSS Funding",
         "creator": "Community",
+        "twitter": "",
+        "twitter_handle": "",
+        "project_url": "",
         "description": "Generic token directing royalties to open-source maintainers; meta-play on sustainable funding."
     }
 }
@@ -191,6 +215,9 @@ with st.spinner("Fetching live data from DexScreener..."):
                 "ticker": f"${ticker}",
                 "name": info["name"],
                 "creator": info["creator"],
+                "twitter": info.get("twitter", ""),
+                "twitter_handle": info.get("twitter_handle", ""),
+                "project_url": info.get("project_url", ""),
                 "description": info["description"],
                 "price": float(pair.get("priceUsd", 0) or 0),
                 "fdv": float(pair.get("fdv", 0) or 0),
@@ -210,6 +237,9 @@ with st.spinner("Fetching live data from DexScreener..."):
                 "ticker": f"${ticker}",
                 "name": info["name"],
                 "creator": info["creator"],
+                "twitter": info.get("twitter", ""),
+                "twitter_handle": info.get("twitter_handle", ""),
+                "project_url": info.get("project_url", ""),
                 "description": info["description"],
                 "price": 0,
                 "fdv": 0,
@@ -289,9 +319,9 @@ if len(df_filtered) > 0:
     display_df["6h"] = display_df["change_6h"].apply(format_change_colored)
     display_df["24h"] = display_df["change_24h"].apply(format_change_colored)
     
-    table_df = display_df[["ticker", "url", "name", "creator", "Price", "FDV/MC", "24h Volume", 
+    table_df = display_df[["ticker", "url", "name", "project_url", "creator", "twitter", "Price", "FDV/MC", "24h Volume", 
                             "Liquidity", "5m", "1h", "6h", "24h", "pair_age", "Status"]].copy()
-    table_df.columns = ["Ticker", "URL", "Project Name", "Creator", "Price", "FDV/MC", "24h Volume", 
+    table_df.columns = ["Ticker", "DexScreener", "Project Name", "Project", "Creator", "Twitter", "Price", "FDV/MC", "24h Volume", 
                         "Liquidity", "5m", "1h", "6h", "24h", "Pair Age", "Status"]
     
     st.caption("Select tokens to compare in charts below:")
@@ -311,9 +341,11 @@ if len(df_filtered) > 0:
         hide_index=True,
         column_config={
             "Ticker": st.column_config.TextColumn("Ticker", width="small"),
-            "URL": st.column_config.LinkColumn("DexScreener", display_text="View", width="small"),
+            "DexScreener": st.column_config.LinkColumn("DexScreener", display_text="View", width="small"),
             "Project Name": st.column_config.TextColumn("Project Name", width="medium"),
-            "Creator": st.column_config.TextColumn("Creator", width="medium"),
+            "Project": st.column_config.LinkColumn("Project", display_text="View", width="small"),
+            "Creator": st.column_config.TextColumn("Creator", width="small"),
+            "Twitter": st.column_config.LinkColumn("Twitter", display_text="View", width="small"),
             "Price": st.column_config.TextColumn("Price", width="small"),
             "FDV/MC": st.column_config.TextColumn("FDV/MC", width="small"),
             "24h Volume": st.column_config.TextColumn("24h Volume", width="small"),
