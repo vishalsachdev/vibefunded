@@ -53,8 +53,8 @@ TOKENS = {
     "CLAUDEFLOW": {
         "name": "ClaudeFlow",
         "creator": "Reuven Cohen",
-        "social": "https://github.com/ruvnet",
-        "social_handle": "@ruvnet",
+        "social": "https://www.linkedin.com/in/reuvencohen/",
+        "social_handle": "LinkedIn",
         "project_url": "https://github.com/ruvnet",
         "bags_url": "https://bags.fm/AZnYQZUV7UfyxvkhTTgakUtd8J5nvGYtTzmKpkFcBAGS",
         "token_mint": "AZnYQZUV7UfyxvkhTTgakUtd8J5nvGYtTzmKpkFcBAGS",
