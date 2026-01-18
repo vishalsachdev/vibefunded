@@ -390,9 +390,9 @@ if len(df_filtered) > 0:
         hide_index=True,
         column_config={
             "Ticker": st.column_config.TextColumn("Ticker", width="small"),
-            "Project Name": st.column_config.TextColumn("Project Name", width="medium"),
+            "Project Name": st.column_config.TextColumn("Project Name", width="small"),
             "Project": st.column_config.LinkColumn("Project", display_text="View", width="small"),
-            "Creator": st.column_config.TextColumn("Creator", width="small"),
+            "Creator": st.column_config.TextColumn("Creator", width="medium"),
             "Social": st.column_config.LinkColumn("Social", display_text="View", width="small"),
             "Bags.fm": st.column_config.LinkColumn("Bags.fm", display_text="View", width="small"),
             "Earnings (USD)": st.column_config.TextColumn("Earnings (USD)", width="small"),
@@ -403,10 +403,10 @@ if len(df_filtered) > 0:
             "24h Volume": st.column_config.TextColumn("24h Volume", width="small"),
             "Liquidity": st.column_config.TextColumn("Liquidity", width="small"),
             "DexScreener": st.column_config.LinkColumn("DexScreener", display_text="View", width="small"),
-            "5m": st.column_config.TextColumn("5m", width="small"),
-            "1h": st.column_config.TextColumn("1h", width="small"),
-            "6h": st.column_config.TextColumn("6h", width="small"),
-            "24h": st.column_config.TextColumn("24h", width="small"),
+            "5m": st.column_config.TextColumn("5m", width="medium"),
+            "1h": st.column_config.TextColumn("1h", width="medium"),
+            "6h": st.column_config.TextColumn("6h", width="medium"),
+            "24h": st.column_config.TextColumn("24h", width="medium"),
             "Status": st.column_config.TextColumn("Status", width="small"),
         }
     )
