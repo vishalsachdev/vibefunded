@@ -52,7 +52,7 @@ TOKENS = {
     },
     "CLAUDEFLOW": {
         "name": "ClaudeFlow",
-        "creator": "ruvnet",
+        "creator": "Reuven Cohen",
         "social": "https://github.com/ruvnet",
         "social_handle": "@ruvnet",
         "project_url": "https://github.com/ruvnet",
@@ -62,7 +62,7 @@ TOKENS = {
     },
     "LEON": {
         "name": "LEON AI",
-        "creator": "grenlouis",
+        "creator": "Gren Louis",
         "social": "https://x.com/grenlouis",
         "social_handle": "@grenlouis",
         "project_url": "https://github.com/leon-ai",
