@@ -359,6 +359,7 @@ if "selected_tokens" not in st.session_state:
 
 if len(df_filtered) > 0:
     display_df = df_filtered.copy()
+    display_df = display_df.sort_values("earnings_usd", ascending=True)
     
     display_df["Price"] = display_df["price"].apply(format_price)
     display_df["FDV/MC"] = display_df["fdv"].apply(lambda x: format_number(x))
@@ -366,7 +367,6 @@ if len(df_filtered) > 0:
     display_df["Liquidity"] = display_df["liquidity"].apply(lambda x: format_number(x))
     display_df["Status"] = display_df["active"].apply(lambda x: "Active" if x else "Inactive/No Data")
     display_df["Earnings (USD)"] = display_df["earnings_usd"].apply(lambda x: f"${x:,.0f}" if x and x > 0 else "N/A")
-    display_df["Earnings (SOL)"] = display_df["earnings"].apply(lambda x: f"{x:,.2f} SOL" if x and x > 0 else "N/A")
     
     def format_change_colored(change):
         if change is None or change == 0:
@@ -379,9 +379,9 @@ if len(df_filtered) > 0:
     display_df["6h"] = display_df["change_6h"].apply(format_change_colored)
     display_df["24h"] = display_df["change_24h"].apply(format_change_colored)
     
-    table_df = display_df[["ticker", "name", "project_url", "creator", "social", "bags_url", "Earnings (USD)", "Earnings (SOL)", "pair_age", "Price", "FDV/MC", "24h Volume", 
+    table_df = display_df[["ticker", "name", "project_url", "creator", "social", "bags_url", "Earnings (USD)", "pair_age", "Price", "FDV/MC", "24h Volume", 
                             "Liquidity", "url", "5m", "1h", "6h", "24h", "Status"]].copy()
-    table_df.columns = ["Ticker", "Project Name", "Project", "Creator", "Social", "Bags.fm", "Earnings (USD)", "Earnings (SOL)", "Days from Launch", "Price", "FDV/MC", "24h Volume", 
+    table_df.columns = ["Ticker", "Project Name", "Project", "Creator", "Social", "Bags.fm", "Earnings (USD)", "Days from Launch", "Price", "FDV/MC", "24h Volume", 
                         "Liquidity", "DexScreener", "5m", "1h", "6h", "24h", "Status"]
     
     st.dataframe(
@@ -396,7 +396,6 @@ if len(df_filtered) > 0:
             "Social": st.column_config.LinkColumn("Social", display_text="View", width="small"),
             "Bags.fm": st.column_config.LinkColumn("Bags.fm", display_text="View", width="small"),
             "Earnings (USD)": st.column_config.TextColumn("Earnings (USD)", width="small"),
-            "Earnings (SOL)": st.column_config.TextColumn("Earnings (SOL)", width="small"),
             "Days from Launch": st.column_config.TextColumn("Days from Launch", width="small"),
             "Price": st.column_config.TextColumn("Price", width="small"),
             "FDV/MC": st.column_config.TextColumn("FDV/MC", width="small"),
