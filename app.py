@@ -416,5 +416,5 @@ else:
 
 st.markdown("---")
 st.caption("""
-Data from DexScreener API • Built for Bags.fm OSS Funding Case Study • Jan 2026 • DYOR – crypto is volatile
+Data from DexScreener API & Bags.fm API • Built for Bags.fm OSS Funding Case Study • Jan 2026 • DYOR – crypto is volatile
 """)
