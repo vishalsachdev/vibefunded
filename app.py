@@ -58,7 +58,17 @@ TOKENS = {
         "project_url": "https://github.com/ruvnet",
         "bags_url": "https://bags.fm/AZnYQZUV7UfyxvkhTTgakUtd8J5nvGYtTzmKpkFcBAGS",
         "token_mint": "AZnYQZUV7UfyxvkhTTgakUtd8J5nvGYtTzmKpkFcBAGS",
-        "description": "Agent orchestration platform for Claude; multi-agent swarms and autonomous workflows.",
+        "description": "Agent orchestration platform for Claude; multi-agent swarms and autonomous workflows."
+    },
+    "LEON": {
+        "name": "LEON AI",
+        "creator": "grenlouis",
+        "social": "https://x.com/grenlouis",
+        "social_handle": "@grenlouis",
+        "project_url": "https://github.com/leon-ai",
+        "bags_url": "https://bags.fm/Fnmq5udTPPkxGjw8nDtnRsjJWfHfdNmsfKGLhUerBAGS",
+        "token_mint": "Fnmq5udTPPkxGjw8nDtnRsjJWfHfdNmsfKGLhUerBAGS",
+        "description": "Open-source personal assistant; royalties support ongoing AI development.",
         "pair_address": "GZUPT46aogt2j3HFZiBa4bikNx1K4f525B9hAsTBGLA7"
     }
 }
