@@ -49,6 +49,17 @@ TOKENS = {
         "token_mint": "8116V1BW9zaXUM6pVhWVaAduKrLcEBi3RGXedKTrBAGS",
         "description": "Vibe-coding automation tool; royalties provide risk-free OSS maintenance funding.",
         "pair_address": "dwudwjvan7bzkw9zwlbyv6kspdlvhwzrqy6ebk8xzxkv"
+    },
+    "CLAUDEFLOW": {
+        "name": "ClaudeFlow",
+        "creator": "ruvnet",
+        "social": "https://github.com/ruvnet",
+        "social_handle": "@ruvnet",
+        "project_url": "https://github.com/ruvnet",
+        "bags_url": "https://bags.fm/AZnYQZUV7UfyxvkhTTgakUtd8J5nvGYtTzmKpkFcBAGS",
+        "token_mint": "AZnYQZUV7UfyxvkhTTgakUtd8J5nvGYtTzmKpkFcBAGS",
+        "description": "Agent orchestration platform for Claude; multi-agent swarms and autonomous workflows.",
+        "pair_address": "GZUPT46aogt2j3HFZiBa4bikNx1K4f525B9hAsTBGLA7"
     }
 }
 
