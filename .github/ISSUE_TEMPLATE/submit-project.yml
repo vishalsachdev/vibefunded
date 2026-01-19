@@ -1,0 +1,148 @@
+name: "Submit a Vibe-Funded Project"
+description: "Suggest a creator/project with a token that funds open source or AI development"
+title: "[Project]: "
+labels: ["project-submission", "community"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit a Vibe-Funded Project
+
+        Help us track creators and projects using memecoin royalties to fund open source software, AI tools, or experimental development work.
+
+        **Before submitting**, please ensure the project:
+        - Has a token on Bags.fm (or similar royalty-based launchpad)
+        - Is tied to actual development work (not purely a meme/speculation play)
+        - Has a public creator identity or pseudonymous presence with verifiable work
+
+        View the live dashboard at **[vibefunded.xyz](https://vibefunded.xyz)**
+
+  - type: input
+    id: token_symbol
+    attributes:
+      label: Token Symbol
+      description: "The ticker symbol (e.g., $GAS, $RALPH)"
+      placeholder: "$TOKEN"
+    validations:
+      required: true
+
+  - type: input
+    id: creator_name
+    attributes:
+      label: Creator Name
+      description: "Name or pseudonym of the project creator"
+      placeholder: "Jane Developer"
+    validations:
+      required: true
+
+  - type: input
+    id: creator_social
+    attributes:
+      label: Creator Social Handle
+      description: "X/Twitter handle or other social presence"
+      placeholder: "@handle"
+    validations:
+      required: true
+
+  - type: input
+    id: project_name
+    attributes:
+      label: Project Name
+      description: "Name of the software project, tool, or research"
+      placeholder: "My Open Source Tool"
+    validations:
+      required: true
+
+  - type: textarea
+    id: project_description
+    attributes:
+      label: Project Description
+      description: "Brief description of what the project does (2-3 sentences)"
+      placeholder: "Describe the project and what makes it interesting..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: project_category
+    attributes:
+      label: Project Category
+      description: "What type of work does this project represent?"
+      options:
+        - AI/ML Tools
+        - Developer Tools
+        - Open Source Library
+        - AI Agent/Orchestration
+        - Programming Language/Compiler
+        - Personal Assistant
+        - Automation Tool
+        - Research/Experimental
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: github_url
+    attributes:
+      label: GitHub/Code Repository
+      description: "Link to the project's source code (if public)"
+      placeholder: "https://github.com/..."
+    validations:
+      required: false
+
+  - type: input
+    id: project_url
+    attributes:
+      label: Project Website
+      description: "Link to project documentation or website"
+      placeholder: "https://..."
+    validations:
+      required: false
+
+  - type: input
+    id: token_address
+    attributes:
+      label: Token Contract Address
+      description: "Solana token address for verification"
+      placeholder: "..."
+    validations:
+      required: true
+
+  - type: input
+    id: launchpad
+    attributes:
+      label: Launchpad Platform
+      description: "Where was the token launched?"
+      placeholder: "Bags.fm"
+    validations:
+      required: true
+
+  - type: textarea
+    id: creator_context
+    attributes:
+      label: Creator Background
+      description: "Any relevant background on the creator (prior work, reputation, etc.)"
+      placeholder: "Optional context about the creator..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes
+      description: "Anything else relevant (funding milestones, unique aspects, etc.)"
+      placeholder: "Optional additional context..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      description: "Please confirm the following:"
+      options:
+        - label: "I have verified this project has active development or research work"
+          required: true
+        - label: "The token provides royalties to the creator (not just a one-time launch)"
+          required: true
+        - label: "I am not the creator of this project (or have disclosed this)"
+          required: false
