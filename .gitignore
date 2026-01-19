@@ -1,0 +1,30 @@
+# Archive directory (contains Replit/Streamlit files)
+archive/
+
+# Replit-specific directories (contain secrets)
+.config/
+.local/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Replit-specific (if any remain)
+.replit
+.replit.nix
