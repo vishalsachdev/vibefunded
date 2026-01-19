@@ -116,6 +116,43 @@ def fetch_dexscreener_data(ticker, pair_address=None):
     except Exception:
         return None
 
+def fetch_github_stats(project_url):
+    """Fetch GitHub repository statistics"""
+    if not project_url or "github.com" not in project_url:
+        return None
+    
+    try:
+        # Extract owner/repo from URL
+        # e.g., https://github.com/steveyegge/gastown -> steveyegge/gastown
+        parts = project_url.replace("https://github.com/", "").replace("http://github.com/", "").strip("/")
+        if not parts:
+            return None
+        
+        # GitHub API for public repos (no auth needed, but rate limited to 60/hour)
+        url = f"https://api.github.com/repos/{parts}"
+        headers = {
+            "Accept": "application/vnd.github.v3+json",
+            "User-Agent": "VibeFunded-Dashboard"
+        }
+        response = requests.get(url, headers=headers, timeout=10)
+        
+        if response.status_code == 200:
+            data = response.json()
+            return {
+                "stars": data.get("stargazers_count", 0),
+                "forks": data.get("forks_count", 0),
+                "watchers": data.get("watchers_count", 0),
+                "open_issues": data.get("open_issues_count", 0),
+                "language": data.get("language", "N/A"),
+                "created_at": data.get("created_at", ""),
+                "updated_at": data.get("updated_at", ""),
+                "description": data.get("description", "")
+            }
+        return None
+    except Exception as e:
+        print(f"  Error fetching GitHub stats: {e}")
+        return None
+
 def calculate_pair_age(pair_created_at):
     if not pair_created_at:
         return "N/A"
@@ -153,6 +190,9 @@ def main():
         earnings = fetch_bags_earnings(token_mint) if token_mint else None
         earnings_usd = earnings * sol_price if earnings and sol_price else 0
         
+        # Fetch GitHub stats
+        github_stats = fetch_github_stats(info.get("project_url", ""))
+        
         if pair:
             price_changes = pair.get("priceChange", {})
             token_data.append({
@@ -177,7 +217,11 @@ def main():
                 "pair_age": calculate_pair_age(pair.get("pairCreatedAt")),
                 "url": pair.get("url", f"https://dexscreener.com/solana/{pair.get('pairAddress', '')}"),
                 "pair_address": pair.get("pairAddress", ""),
-                "active": True
+                "active": True,
+                "github_stars": github_stats.get("stars", 0) if github_stats else 0,
+                "github_forks": github_stats.get("forks", 0) if github_stats else 0,
+                "github_watchers": github_stats.get("watchers", 0) if github_stats else 0,
+                "github_language": github_stats.get("language", "N/A") if github_stats else "N/A"
             })
         else:
             token_data.append({
@@ -202,7 +246,11 @@ def main():
                 "pair_age": "N/A",
                 "url": "",
                 "pair_address": "",
-                "active": False
+                "active": False,
+                "github_stars": github_stats.get("stars", 0) if github_stats else 0,
+                "github_forks": github_stats.get("forks", 0) if github_stats else 0,
+                "github_watchers": github_stats.get("watchers", 0) if github_stats else 0,
+                "github_language": github_stats.get("language", "N/A") if github_stats else "N/A"
             })
     
     active_tokens = [t for t in token_data if t["active"]]

@@ -126,6 +126,87 @@
             margin-top: 10px;
         }
         
+        .social-metrics {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .social-metrics h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .github-chart {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .github-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .github-bar-label {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .github-bar-container {
+            flex: 1;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            height: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .github-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: width 0.5s ease;
+        }
+        
+        .github-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .github-stat-card {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .github-stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        .github-stat-card .value {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
         .table-container {
             overflow-x: auto;
             background: var(--bg-secondary);
@@ -363,6 +444,19 @@
                 font-size: 0.75rem;
             }
             
+            .social-metrics {
+                padding: 15px;
+            }
+            
+            .github-bar-label {
+                min-width: 100px;
+                font-size: 0.9rem;
+            }
+            
+            .github-stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .about-section {
                 padding: 15px;
             }
@@ -507,6 +601,14 @@
         <div class="refresh-note">Data refreshes automatically every 30 minutes</div>
     </div>
 
+    <div class="social-metrics">
+        <h3>📊 Social Popularity Metrics</h3>
+        <div id="github-stars-chart" class="github-chart">
+            <div class="loading">Loading GitHub data...</div>
+        </div>
+        <div id="github-stats" class="github-stats-grid"></div>
+    </div>
+
     <div class="table-container">
         <table id="token-table">
             <thead>
@@ -583,6 +685,7 @@
                 
                 renderSummary(data.summary);
                 tokenData = data.tokens;
+                renderGitHubChart();
                 sortAndRender();
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -706,6 +809,51 @@
             const arrow = document.getElementById('about-arrow');
             content.classList.toggle('show');
             arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
+        }
+
+        function renderGitHubChart() {
+            const chartContainer = document.getElementById('github-stars-chart');
+            const statsContainer = document.getElementById('github-stats');
+            
+            // Filter tokens with GitHub data
+            const tokensWithGitHub = tokenData.filter(t => t.github_stars > 0);
+            
+            if (tokensWithGitHub.length === 0) {
+                chartContainer.innerHTML = '<div class="loading">GitHub data not available</div>';
+                statsContainer.innerHTML = '';
+                return;
+            }
+            
+            // Sort by stars
+            tokensWithGitHub.sort((a, b) => b.github_stars - a.github_stars);
+            const maxStars = Math.max(...tokensWithGitHub.map(t => t.github_stars));
+            
+            // Render stars comparison chart
+            chartContainer.innerHTML = tokensWithGitHub.map(t => {
+                const width = maxStars > 0 ? (t.github_stars / maxStars) * 100 : 0;
+                return `
+                    <div class="github-bar">
+                        <div class="github-bar-label">${t.name}</div>
+                        <div class="github-bar-container">
+                            <div class="github-bar-fill" style="width: ${width}%">
+                                ${t.github_stars > 0 ? t.github_stars.toLocaleString() : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Render stats grid
+            statsContainer.innerHTML = tokensWithGitHub.map(t => `
+                <div class="github-stat-card">
+                    <div class="label">${t.name}</div>
+                    <div class="value">⭐ ${t.github_stars.toLocaleString()}</div>
+                    <div style="margin-top: 8px; font-size: 0.8rem; color: var(--text-secondary);">
+                        🍴 ${t.github_forks.toLocaleString()} forks
+                        ${t.github_watchers > 0 ? ` • 👀 ${t.github_watchers.toLocaleString()} watchers` : ''}
+                    </div>
+                </div>
+            `).join('');
         }
 
         loadData();
