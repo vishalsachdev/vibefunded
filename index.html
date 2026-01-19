@@ -97,29 +97,33 @@
             font-weight: 600;
         }
         
-        .controls {
-            display: flex;
-            gap: 15px;
+        .total-earnings-header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
+            text-align: center;
         }
         
-        .controls input {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 10px 15px;
-            border-radius: 8px;
+        .total-earnings-header .label {
+            color: var(--text-secondary);
             font-size: 0.9rem;
-            width: 200px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .total-earnings-header .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
         }
         
         .refresh-note {
             color: var(--text-secondary);
             font-size: 0.85rem;
-            display: flex;
-            align-items: center;
+            margin-top: 10px;
         }
         
         .table-container {
@@ -212,11 +216,6 @@
             color: var(--text-secondary);
         }
         
-        .total-earnings {
-            margin-top: 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
         
         .footer {
             margin-top: 40px;
@@ -352,18 +351,16 @@
                 font-size: 1.2rem;
             }
             
-            .controls { 
-                flex-direction: column; 
-                gap: 10px;
+            .total-earnings-header {
+                padding: 15px;
             }
             
-            .controls input { 
-                width: 100%; 
+            .total-earnings-header .value {
+                font-size: 1.5rem;
             }
             
             .refresh-note {
                 font-size: 0.75rem;
-                margin-top: 10px;
             }
             
             .about-section {
@@ -504,9 +501,10 @@
         <div class="loading">Loading data...</div>
     </div>
 
-    <div class="controls">
-        <input type="number" id="volume-filter" placeholder="Min 24h Volume ($)" min="0" step="1000" value="0" oninput="applyFilter()">
-        <span class="refresh-note">Data refreshes automatically every 30 minutes</span>
+    <div id="total-earnings-header" class="total-earnings-header">
+        <div class="label">Total Earnings from Royalties</div>
+        <div class="value">Loading...</div>
+        <div class="refresh-note">Data refreshes automatically every 30 minutes</div>
     </div>
 
     <div class="table-container">
@@ -518,7 +516,7 @@
                     <th onclick="sortTable('creator')">Creator<span class="sort-indicator">↕</span></th>
                     <th>Links</th>
                     <th onclick="sortTable('earnings_usd')" title="Total lifetime earnings from royalties">Earnings<span class="sort-indicator">↕</span></th>
-                    <th onclick="sortTable('pair_age')" title="Time since token pair was created">Age<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('pair_age')" title="Time since trading pair was created on DEX">Pair Age<span class="sort-indicator">↕</span></th>
                     <th onclick="sortTable('price')" title="Current token price in USD">Price<span class="sort-indicator">↕</span></th>
                     <th onclick="sortTable('fdv')" title="Fully Diluted Valuation / Market Cap">FDV/MC<span class="sort-indicator">↕</span></th>
                     <th onclick="sortTable('volume_24h')" title="24-hour trading volume">24h Vol<span class="sort-indicator">↕</span></th>
@@ -534,8 +532,6 @@
             </tbody>
         </table>
     </div>
-
-    <div id="total-earnings" class="total-earnings"></div>
 
     <footer class="footer">
         Data from DexScreener API & Bags.fm API | Updates every 30 minutes via GitHub Actions | DYOR - crypto is volatile
@@ -631,8 +627,7 @@
         }
 
         function sortAndRender() {
-            const minVolume = parseFloat(document.getElementById('volume-filter').value) || 0;
-            let filtered = tokenData.filter(t => t.volume_24h >= minVolume);
+            let filtered = tokenData;
             
             filtered.sort((a, b) => {
                 let aVal = a[currentSort.field];
@@ -669,8 +664,7 @@
             const tbody = document.getElementById('token-body');
             
             if (tokens.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="14" class="loading">No tokens match the filter criteria.</td></tr>';
-                document.getElementById('total-earnings').textContent = '';
+                tbody.innerHTML = '<tr><td colspan="14" class="loading">No token data available.</td></tr>';
                 return;
             }
             
@@ -703,11 +697,8 @@
                 `;
             }).join('');
             
-            document.getElementById('total-earnings').textContent = `Total Earnings: ${formatNumber(totalEarnings)}`;
-        }
-
-        function applyFilter() {
-            sortAndRender();
+            // Update total earnings header
+            document.getElementById('total-earnings-header').querySelector('.value').textContent = formatNumber(totalEarnings);
         }
 
         function toggleAbout() {
