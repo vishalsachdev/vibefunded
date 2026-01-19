@@ -84,17 +84,19 @@ The results defied expectations for "experimental" work: $202,022 in lifetime ea
 
 ### Lex Christopherson's Automation Tool ($GSD)
 
-Get Shit Done represented pure "vibe-coding" philosophy: rapid, AI-assisted development of practical automation tools without the overhead of traditional software engineering processes. Lex Christopherson built and shipped quickly, iterating based on community feedback rather than elaborate planning.
+Get Shit Done represented pure "vibe-coding" philosophy: rapid, AI-assisted development of practical automation tools without the overhead of traditional software engineering processes. Lex Christopherson (known as TÂCHES or glittercowboy on GitHub) built and shipped quickly, iterating based on community feedback rather than elaborate planning.
 
-The project launched just two days before this analysis. In that time, it generated $42,620 in royalties—demonstrating how quickly the memecoin funding model can validate (or reject) new work. The market cap reached $2.6 million with $2.87 million in daily volume.
+Like the other projects, the $GSD token was community-launched—deployed by supporters who recognized the project's potential before Christopherson himself created a token.[^13] The project began trading just two days before this analysis. In that time, it generated $42,620 in royalties—demonstrating how quickly the memecoin funding model can validate (or reject) new work. The market cap reached $2.6 million with $2.87 million in daily volume.
 
 The speed mattered. Traditional funding requires months of applications, reviews, and decisions. Memecoin royalties provided market feedback in hours.
 
-### Gren Louis's Personal Assistant ($LEON)
+### Louis Grenard's Personal Assistant ($LEON)
 
-LEON AI represented a different case: an established open source project with an existing user base that adopted the memecoin funding model to supplement traditional approaches. The project had struggled with the familiar sustainability challenges—maintenance burden, feature requests, community support expectations—without corresponding income.
+LEON AI represented a different case: an established open source project with an existing user base that benefited from the memecoin funding model through community initiative. Louis Grenard (known as @grenlouis) wrote the first line of code for Leon AI in 2017 and has maintained the project—now with over 16,000 GitHub stars—while working a day job at ByteDance.[^14]
 
-Within six days of launching $LEON, the project had earned $54,152 in royalties. The market cap was more modest at $283,634, but the proof of concept was clear: even existing projects could tap into speculative capital flows.
+Like the others, the $LEON token was community-launched as a crowdfunding mechanism.[^15] Grenard did not create the token himself; fans deployed it to support his work. When he discovered and claimed it, he stated publicly that 100% of funds would go strictly to development time, API costs, and hardware for local inference testing. He cautioned buyers that this was speculative support, not an investment.
+
+Within six days of the token's creation, Grenard had earned $54,152 in royalties. The market cap was more modest at $283,634, but the proof of concept was clear: even established projects could tap into speculative capital flows without the creator initiating anything.
 
 ---
 
@@ -305,3 +307,9 @@ This research benefits from community contributions. Each new project helps buil
 [^11]: Bags.fm's platform design allows anyone to launch tokens tied to verified creator social accounts, with royalties automatically routed to those creators regardless of who deployed the token.
 
 [^12]: Huntley, Geoffrey. Social media posts and project documentation, 2025-2026. https://ghuntley.com
+
+[^13]: The $GSD token was community-launched on Bags.fm by supporters of the Get Shit Done project. Christopherson later claimed the token's royalties. https://github.com/glittercowboy/get-shit-done
+
+[^14]: Grenard, Louis. Leon AI project, maintained since 2017. https://github.com/leon-ai/leon (16,900+ GitHub stars)
+
+[^15]: Grenard, Louis. X/Twitter post confirming fan-driven token launch and 100% commitment of funds to development. https://x.com/grenlouis/status/2012141823209177469
