@@ -219,17 +219,105 @@
             color: var(--text-secondary);
         }
         
+        .about-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .about-toggle {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 10px 0;
+            text-align: left;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+        }
+        
+        .about-toggle:hover {
+            opacity: 0.8;
+        }
+        
+        .about-content {
+            margin-top: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            display: none;
+        }
+        
+        .about-content.show {
+            display: block;
+        }
+        
+        .about-content h3 {
+            color: var(--text-primary);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .about-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .about-content li {
+            margin-bottom: 8px;
+        }
+        
+        .sort-indicator {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+        
+        th:hover .sort-indicator {
+            opacity: 1;
+        }
+        
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .error-message {
+            background: var(--red);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
         @media (max-width: 768px) {
             h1 { font-size: 1.5rem; }
             .summary-grid { grid-template-columns: repeat(2, 1fr); }
             .controls { flex-direction: column; }
             .controls input { width: 100%; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 8px 10px; }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Realtime OSS Funding via Royalties</h1>
+        <h1>Realtime OSS Funding via Royalties
+            <a href="https://github.com/vishalsachdev/oss-memecoin-ftw" target="_blank" class="github-link" title="View on GitHub">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        </h1>
         <div class="subtitle">Bags.fm Creator Memecoin Dashboard</div>
         <p class="description">
             Visualizing how Bags.fm's royalty model turns speculative trading into sustainable funding 
@@ -240,6 +328,46 @@
             <span id="sol-price"></span>
         </div>
     </header>
+
+    <div class="about-section">
+        <button class="about-toggle" onclick="toggleAbout()">
+            <span>📖 About This Dashboard</span>
+            <span id="about-arrow">▼</span>
+        </button>
+        <div class="about-content" id="about-content">
+            <p>
+                <strong>VibeFunded</strong> visualizes a new funding model for open source software: creator memecoins with built-in royalty mechanisms. 
+                Instead of relying on grants, donations, or venture capital, OSS creators can launch tokens where trading volume directly funds ongoing development.
+            </p>
+            
+            <h3>How It Works</h3>
+            <ol>
+                <li>OSS creators launch memecoins on Bags.fm</li>
+                <li>Each trade generates royalties that go to the creator</li>
+                <li>Trading volume directly translates to project funding</li>
+                <li>Network effects drive sustainable, perpetual revenue</li>
+            </ol>
+            
+            <h3>Why It Matters</h3>
+            <ul>
+                <li><strong>Disrupts traditional funding</strong> - No grant applications or VC pitches</li>
+                <li><strong>Community-driven</strong> - Funding scales with project popularity</li>
+                <li><strong>Risk-free for creators</strong> - Royalties provide ongoing maintenance funding</li>
+                <li><strong>Transparent</strong> - All earnings are visible on-chain</li>
+            </ul>
+            
+            <h3>Featured Projects</h3>
+            <p>
+                The dashboard tracks: <strong>Gastown</strong> ($GAS) by Steve Yegge, <strong>Ralph Wiggum Technique</strong> ($RALPH) by Geoffrey Huntley, 
+                <strong>Get Shit Done</strong> ($GSD) by Lex Christopherson, and <strong>LEON AI</strong> ($LEON) by Gren Louis.
+            </p>
+            
+            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                Data updates every 30 minutes from DexScreener, Bags.fm, and CoinGecko APIs. 
+                This dashboard serves as a case study examining disruptive funding models in open source software and AI development.
+            </p>
+        </div>
+    </div>
 
     <div id="summary" class="summary-grid">
         <div class="loading">Loading data...</div>
@@ -255,20 +383,20 @@
         <table id="token-table">
             <thead>
                 <tr>
-                    <th onclick="sortTable('ticker')">Ticker</th>
-                    <th onclick="sortTable('name')">Project</th>
-                    <th onclick="sortTable('creator')">Creator</th>
+                    <th onclick="sortTable('ticker')">Ticker<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('name')">Project<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('creator')">Creator<span class="sort-indicator">↕</span></th>
                     <th>Links</th>
-                    <th onclick="sortTable('earnings_usd')">Earnings</th>
-                    <th onclick="sortTable('pair_age')">Age</th>
-                    <th onclick="sortTable('price')">Price</th>
-                    <th onclick="sortTable('fdv')">FDV/MC</th>
-                    <th onclick="sortTable('volume_24h')">24h Vol</th>
-                    <th onclick="sortTable('liquidity')">Liquidity</th>
-                    <th onclick="sortTable('change_5m')">5m</th>
-                    <th onclick="sortTable('change_1h')">1h</th>
-                    <th onclick="sortTable('change_6h')">6h</th>
-                    <th onclick="sortTable('change_24h')">24h</th>
+                    <th onclick="sortTable('earnings_usd')" title="Total lifetime earnings from royalties">Earnings<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('pair_age')" title="Time since token pair was created">Age<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('price')" title="Current token price in USD">Price<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('fdv')" title="Fully Diluted Valuation / Market Cap">FDV/MC<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('volume_24h')" title="24-hour trading volume">24h Vol<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('liquidity')" title="Total liquidity in USD">Liquidity<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_5m')" title="Price change in last 5 minutes">5m<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_1h')" title="Price change in last hour">1h<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_6h')" title="Price change in last 6 hours">6h<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_24h')" title="Price change in last 24 hours">24h<span class="sort-indicator">↕</span></th>
                 </tr>
             </thead>
             <tbody id="token-body">
@@ -332,7 +460,8 @@
                 sortAndRender();
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.getElementById('summary').innerHTML = '<div class="loading">Error loading data. Please refresh.</div>';
+                document.getElementById('summary').innerHTML = '<div class="error-message">Error loading data. Please refresh the page or try again later.</div>';
+                document.getElementById('token-body').innerHTML = '<tr><td colspan="14" class="error-message">Unable to load token data</td></tr>';
             }
         }
 
@@ -389,6 +518,20 @@
                 return 0;
             });
             
+            // Update sort indicators
+            document.querySelectorAll('th').forEach(th => {
+                const indicators = th.querySelectorAll('.sort-indicator');
+                indicators.forEach(ind => {
+                    if (th.getAttribute('onclick') && th.getAttribute('onclick').includes(currentSort.field)) {
+                        ind.textContent = currentSort.asc ? '↑' : '↓';
+                        ind.style.opacity = '1';
+                    } else {
+                        ind.textContent = '↕';
+                        ind.style.opacity = '0.5';
+                    }
+                });
+            });
+            
             renderTable(filtered);
         }
 
@@ -438,8 +581,22 @@
         }
 
         function refreshData() {
+            document.getElementById('summary').innerHTML = '<div class="loading">Refreshing data...</div>';
+            document.getElementById('token-body').innerHTML = '<tr><td colspan="14" class="loading">Refreshing...</td></tr>';
             loadData();
         }
+
+        function toggleAbout() {
+            const content = document.getElementById('about-content');
+            const arrow = document.getElementById('about-arrow');
+            content.classList.toggle('show');
+            arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
+        }
+
+        // Auto-refresh every 5 minutes
+        setInterval(() => {
+            loadData();
+        }, 5 * 60 * 1000);
 
         loadData();
     </script>
