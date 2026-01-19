@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - 'scripts/fetch_data.py'
+      - 'public/data.json'
 
 jobs:
   update-data:
