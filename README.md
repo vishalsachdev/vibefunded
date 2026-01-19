@@ -8,7 +8,7 @@ A live dashboard tracking how Bags.fm's royalty model turns speculative trading 
 
 ## About
 
-VibeFunded visualizes a new funding model for open source software: creator memecoins with built-in royalty mechanisms. Instead of relying on grants, donations, or venture capital, OSS creators can launch tokens where trading volume directly funds ongoing development.
+VibeFunded visualizes a new funding model for open source software: memecoins with built-in royalty mechanisms. Instead of relying on grants, donations, or venture capital, OSS creators or community members can launch tokens where trading volume directly funds ongoing development.
 
 This dashboard tracks real-time metrics for OSS projects that have launched memecoins on Bags.fm, showing:
 
@@ -20,8 +20,8 @@ This dashboard tracks real-time metrics for OSS projects that have launched meme
 ## The Model
 
 **How it works:**
-1. OSS creators launch memecoins on Bags.fm
-2. Each trade generates royalties that go to the creator
+1. OSS creators or community members launch memecoins on Bags.fm for OSS projects
+2. Each trade generates royalties that go to support the project
 3. Trading volume directly translates to project funding
 4. Network effects drive sustainable, perpetual revenue
 
@@ -57,7 +57,7 @@ Data updates automatically every 30 minutes via GitHub Actions.
 
 ## Key Insights
 
-- **Bags.fm enables OSS creators** to launch memecoins with built-in royalty mechanisms
+- **Bags.fm enables OSS creators or community members** to launch memecoins with built-in royalty mechanisms
 - **Trading volume directly translates** to creator funding via royalties
 - **This model disrupts traditional grant/VC funding** for open source
 - **Network effects drive sustainable, perpetual revenue** for maintainers
