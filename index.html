@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Realtime OSS Funding via Royalties</title>
     <style>
         :root {
@@ -31,6 +31,8 @@
             padding: 20px;
             max-width: 1400px;
             margin: 0 auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         header {
@@ -131,6 +133,24 @@
             background: var(--bg-secondary);
             border-radius: 12px;
             border: 1px solid var(--border);
+            position: relative;
+        }
+        
+        .table-container::after {
+            content: '← Scroll →';
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        @media (min-width: 769px) {
+            .table-container::after {
+                display: none;
+            }
         }
         
         table {
@@ -302,12 +322,128 @@
         }
         
         @media (max-width: 768px) {
-            h1 { font-size: 1.5rem; }
-            .summary-grid { grid-template-columns: repeat(2, 1fr); }
-            .controls { flex-direction: column; }
-            .controls input { width: 100%; }
-            table { font-size: 0.8rem; }
-            th, td { padding: 8px 10px; }
+            body {
+                padding: 10px;
+            }
+            
+            h1 { 
+                font-size: 1.5rem; 
+                line-height: 1.2;
+            }
+            
+            .subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .description {
+                font-size: 0.85rem;
+            }
+            
+            .meta {
+                flex-direction: column;
+                gap: 10px;
+                font-size: 0.8rem;
+            }
+            
+            .summary-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 10px;
+            }
+            
+            .summary-card {
+                padding: 15px;
+            }
+            
+            .summary-card .value {
+                font-size: 1.2rem;
+            }
+            
+            .controls { 
+                flex-direction: column; 
+                gap: 10px;
+            }
+            
+            .controls input { 
+                width: 100%; 
+            }
+            
+            .controls button {
+                width: 100%;
+            }
+            
+            .about-section {
+                padding: 15px;
+            }
+            
+            .about-content {
+                font-size: 0.9rem;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 8px;
+            }
+            
+            table { 
+                font-size: 0.75rem; 
+                min-width: 800px;
+            }
+            
+            th, td { 
+                padding: 8px 6px; 
+                white-space: nowrap;
+            }
+            
+            th {
+                font-size: 0.7rem;
+            }
+            
+            .link-cell {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .link-cell a {
+                font-size: 0.75rem;
+                padding: 2px 0;
+            }
+            
+            .github-link {
+                margin-left: 5px;
+                font-size: 0.75rem;
+            }
+            
+            .footer {
+                font-size: 0.75rem;
+                padding-top: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-card .value {
+                font-size: 1.1rem;
+            }
+            
+            table {
+                font-size: 0.7rem;
+            }
+            
+            th, td {
+                padding: 6px 4px;
+            }
+            
+            .about-content h3 {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
