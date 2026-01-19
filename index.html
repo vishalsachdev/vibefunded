@@ -115,19 +115,11 @@
             width: 200px;
         }
         
-        .controls button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-        }
-        
-        .controls button:hover {
-            opacity: 0.9;
+        .refresh-note {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
         }
         
         .table-container {
@@ -369,8 +361,9 @@
                 width: 100%; 
             }
             
-            .controls button {
-                width: 100%;
+            .refresh-note {
+                font-size: 0.75rem;
+                margin-top: 10px;
             }
             
             .about-section {
@@ -512,9 +505,8 @@
     </div>
 
     <div class="controls">
-        <input type="number" id="volume-filter" placeholder="Min 24h Volume ($)" min="0" step="1000" value="0">
-        <button onclick="applyFilter()">Apply Filter</button>
-        <button onclick="refreshData()">Refresh Data</button>
+        <input type="number" id="volume-filter" placeholder="Min 24h Volume ($)" min="0" step="1000" value="0" oninput="applyFilter()">
+        <span class="refresh-note">Data refreshes automatically every 30 minutes</span>
     </div>
 
     <div class="table-container">
@@ -716,12 +708,6 @@
 
         function applyFilter() {
             sortAndRender();
-        }
-
-        function refreshData() {
-            document.getElementById('summary').innerHTML = '<div class="loading">Refreshing data...</div>';
-            document.getElementById('token-body').innerHTML = '<tr><td colspan="14" class="loading">Refreshing...</td></tr>';
-            loadData();
         }
 
         function toggleAbout() {
