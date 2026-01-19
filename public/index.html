@@ -2,19 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realtime OSS Funding via Royalties</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>VibeFunded - OSS Funding via Royalties</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0f0f0f;
-            --bg-secondary: #1a1a1a;
-            --bg-card: #252525;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent: #6366f1;
-            --green: #22c55e;
-            --red: #ef4444;
-            --border: #333;
+            --bg-primary: #0a0f14;
+            --bg-secondary: #111820;
+            --bg-card: #1a232e;
+            --bg-card-hover: #222d3a;
+            --text-primary: #f0f4f8;
+            --text-secondary: #8899a8;
+            --text-muted: #5a6b7a;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --accent-glow: rgba(20, 184, 166, 0.15);
+            --green: #10b981;
+            --green-bg: rgba(16, 185, 129, 0.1);
+            --red: #f43f5e;
+            --red-bg: rgba(244, 63, 94, 0.1);
+            --border: #2a3544;
+            --border-light: #3a4554;
+            --gradient-accent: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
         }
         
         * {
@@ -24,212 +37,651 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            padding: 20px;
-            max-width: 1400px;
+            padding: 24px;
+            max-width: 1440px;
             margin: 0 auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
+
         header {
-            margin-bottom: 30px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
         }
-        
+
         h1 {
-            font-size: 2rem;
+            font-size: 1.75rem;
+            font-weight: 700;
             margin-bottom: 8px;
+            letter-spacing: -0.025em;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
-        
+
         .subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 15px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        
+
         .description {
             color: var(--text-secondary);
             font-size: 0.95rem;
-            max-width: 800px;
+            max-width: 720px;
+            line-height: 1.7;
         }
-        
+
         .meta {
             display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            gap: 24px;
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
-        
+
         .meta span {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-card);
+            border-radius: 6px;
+            border: 1px solid var(--border);
         }
         
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 16px;
+            margin-bottom: 24px;
         }
-        
+
         .summary-card {
             background: var(--bg-card);
             padding: 20px;
             border-radius: 12px;
             border: 1px solid var(--border);
+            transition: all 0.2s ease;
         }
-        
+
+        .summary-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+        }
+
         .summary-card .label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
         }
-        
+
         .summary-card .value {
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .total-earnings-header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--accent-glow) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .total-earnings-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-accent);
+        }
+
+        .total-earnings-header .label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        .total-earnings-header .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .refresh-note {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 12px;
         }
         
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .controls input {
-            background: var(--bg-secondary);
+        .social-metrics {
+            background: var(--bg-card);
             border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .social-metrics h3 {
             color: var(--text-primary);
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            width: 200px;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .controls button {
-            background: var(--accent);
+
+        .github-chart {
+            display: grid;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .github-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .github-bar-label {
+            min-width: 120px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .github-bar-container {
+            flex: 1;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            height: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .github-bar-fill {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px var(--accent-glow);
         }
-        
-        .controls button:hover {
-            opacity: 0.9;
+
+        .github-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .github-stat-card {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .github-stat-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .github-stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .github-stat-card .value {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 700;
         }
         
         .table-container {
             overflow-x: auto;
             background: var(--bg-secondary);
-            border-radius: 12px;
+            border-radius: 16px;
             border: 1px solid var(--border);
+            position: relative;
         }
-        
+
+        .table-container::after {
+            content: '← Scroll →';
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            opacity: 0.8;
+            pointer-events: none;
+            padding: 4px 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+        }
+
+        @media (min-width: 769px) {
+            .table-container::after {
+                display: none;
+            }
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
         }
-        
+
         th, td {
-            padding: 12px 15px;
+            padding: 14px 16px;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
-        
+
         th {
             background: var(--bg-card);
             font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
             cursor: pointer;
             user-select: none;
+            transition: color 0.15s ease;
+            position: sticky;
+            top: 0;
         }
-        
+
         th:hover {
-            color: var(--text-primary);
+            color: var(--accent-light);
         }
-        
+
+        tr {
+            transition: background 0.15s ease;
+        }
+
         tr:hover {
             background: var(--bg-card);
         }
-        
-        .positive { color: var(--green); }
-        .negative { color: var(--red); }
-        
+
+        .positive {
+            color: var(--green);
+            background: var(--green-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .negative {
+            color: var(--red);
+            background: var(--red-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
         a {
             color: var(--accent);
             text-decoration: none;
+            transition: color 0.15s ease;
         }
-        
+
         a:hover {
-            text-decoration: underline;
+            color: var(--accent-light);
+            text-decoration: none;
         }
-        
+
         .link-cell {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
-        
+
         .link-cell a {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            transition: all 0.15s ease;
         }
-        
+
+        .link-cell a:hover {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
         .ticker {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--accent);
+            font-size: 0.9rem;
         }
-        
+
         .status-active {
             color: var(--green);
         }
-        
+
         .status-inactive {
-            color: var(--text-secondary);
-        }
-        
-        .total-earnings {
-            margin-top: 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            color: var(--text-muted);
         }
         
         .footer {
-            margin-top: 40px;
-            padding-top: 20px;
+            margin-top: 48px;
+            padding: 24px;
             border-top: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
             text-align: center;
+            background: var(--bg-secondary);
+            border-radius: 12px;
         }
-        
+
         .loading {
             text-align: center;
-            padding: 50px;
+            padding: 48px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .about-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .about-toggle {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 8px 0;
+            text-align: left;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            transition: color 0.15s ease;
+        }
+
+        .about-toggle:hover {
+            color: var(--accent-light);
+        }
+
+        .about-content {
+            margin-top: 16px;
             color: var(--text-secondary);
+            line-height: 1.8;
+            display: none;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .about-content.show {
+            display: block;
+        }
+
+        .about-content h3 {
+            color: var(--text-primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .about-content ul, .about-content ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .about-content li {
+            margin-bottom: 10px;
+        }
+
+        .sort-indicator {
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 0.65rem;
+            opacity: 0.4;
+            transition: opacity 0.15s ease;
+        }
+
+        th:hover .sort-indicator {
+            opacity: 1;
+            color: var(--accent-light);
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 0;
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            background: var(--bg-card);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            transition: all 0.15s ease;
+        }
+
+        .github-link:hover {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        .error-message {
+            background: var(--red-bg);
+            color: var(--red);
+            padding: 16px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid var(--red);
         }
         
         @media (max-width: 768px) {
-            h1 { font-size: 1.5rem; }
-            .summary-grid { grid-template-columns: repeat(2, 1fr); }
-            .controls { flex-direction: column; }
-            .controls input { width: 100%; }
+            body {
+                padding: 12px;
+            }
+
+            header {
+                margin-bottom: 24px;
+                padding-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 1.35rem;
+                line-height: 1.3;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+            }
+
+            .description {
+                font-size: 0.85rem;
+            }
+
+            .meta {
+                flex-direction: column;
+                gap: 8px;
+                font-size: 0.75rem;
+            }
+
+            .meta span {
+                padding: 4px 10px;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .summary-card {
+                padding: 14px;
+            }
+
+            .summary-card .value {
+                font-size: 1.15rem;
+            }
+
+            .total-earnings-header {
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            .total-earnings-header .value {
+                font-size: 1.75rem;
+            }
+
+            .refresh-note {
+                font-size: 0.7rem;
+            }
+
+            .social-metrics {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            .github-bar-label {
+                min-width: 90px;
+                font-size: 0.8rem;
+            }
+
+            .github-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-section {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            .about-content {
+                font-size: 0.85rem;
+            }
+
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 10px;
+            }
+
+            table {
+                font-size: 0.75rem;
+                min-width: 800px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                white-space: nowrap;
+            }
+
+            th {
+                font-size: 0.65rem;
+            }
+
+            .link-cell {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .link-cell a {
+                font-size: 0.7rem;
+                padding: 3px 6px;
+            }
+
+            .github-link {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+
+            .footer {
+                font-size: 0.7rem;
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.15rem;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card .value {
+                font-size: 1.1rem;
+            }
+
+            .total-earnings-header .value {
+                font-size: 1.5rem;
+            }
+
+            table {
+                font-size: 0.7rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+
+            .about-content h3 {
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Realtime OSS Funding via Royalties</h1>
+        <h1>Realtime OSS Funding via Royalties
+            <a href="https://github.com/vishalsachdev/oss-memecoin-ftw" target="_blank" class="github-link" title="View on GitHub">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        </h1>
         <div class="subtitle">Bags.fm Creator Memecoin Dashboard</div>
         <p class="description">
             Visualizing how Bags.fm's royalty model turns speculative trading into sustainable funding 
@@ -241,34 +693,76 @@
         </div>
     </header>
 
+    <div class="about-section">
+        <button class="about-toggle" onclick="toggleAbout()">
+            <span>📖 About This Dashboard</span>
+            <span id="about-arrow">▼</span>
+        </button>
+        <div class="about-content" id="about-content">
+            <p>
+                <strong>VibeFunded</strong> visualizes a new funding model for open source software: memecoins with built-in royalty mechanisms. 
+                Instead of relying on grants, donations, or venture capital, OSS creators or community members can launch tokens where trading volume directly funds ongoing development.
+            </p>
+            
+            <h3>How It Works</h3>
+            <ol>
+                <li>OSS creators or community members launch memecoins on Bags.fm for OSS projects</li>
+                <li>Each trade generates royalties that go to support the project</li>
+                <li>Trading volume directly translates to project funding</li>
+                <li>Network effects drive sustainable, perpetual revenue</li>
+            </ol>
+            
+            <h3>Why It Matters</h3>
+            <ul>
+                <li><strong>Disrupts traditional funding</strong> - No grant applications or VC pitches</li>
+                <li><strong>Community-driven</strong> - Funding scales with project popularity</li>
+                <li><strong>Risk-free for creators</strong> - Royalties provide ongoing maintenance funding</li>
+                <li><strong>Transparent</strong> - All earnings are visible on-chain</li>
+            </ul>
+            
+            <h3>Featured Projects</h3>
+            <p>
+                The dashboard tracks: <strong>Gastown</strong> ($GAS) by Steve Yegge, <strong>Ralph Wiggum Technique</strong> ($RALPH) by Geoffrey Huntley, 
+                <strong>Get Shit Done</strong> ($GSD) by Lex Christopherson, and <strong>LEON AI</strong> ($LEON) by Gren Louis.
+            </p>
+            
+            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                Data updates every 30 minutes from DexScreener, Bags.fm, and CoinGecko APIs. 
+                This dashboard serves as a case study examining disruptive funding models in open source software and AI development.
+            </p>
+        </div>
+    </div>
+
     <div id="summary" class="summary-grid">
         <div class="loading">Loading data...</div>
     </div>
 
-    <div class="controls">
-        <input type="number" id="volume-filter" placeholder="Min 24h Volume ($)" min="0" step="1000" value="0">
-        <button onclick="applyFilter()">Apply Filter</button>
-        <button onclick="refreshData()">Refresh Data</button>
+    <div id="total-earnings-header" class="total-earnings-header">
+        <div class="label">Total Earnings from Royalties</div>
+        <div class="value">Loading...</div>
+        <div class="refresh-note">Data refreshes automatically every 30 minutes</div>
     </div>
 
     <div class="table-container">
         <table id="token-table">
             <thead>
                 <tr>
-                    <th onclick="sortTable('ticker')">Ticker</th>
-                    <th onclick="sortTable('name')">Project</th>
-                    <th onclick="sortTable('creator')">Creator</th>
+                    <th onclick="sortTable('ticker')">Ticker<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('name')">Project<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('creator')">Creator<span class="sort-indicator">↕</span></th>
                     <th>Links</th>
-                    <th onclick="sortTable('earnings_usd')">Earnings</th>
-                    <th onclick="sortTable('pair_age')">Age</th>
-                    <th onclick="sortTable('price')">Price</th>
-                    <th onclick="sortTable('fdv')">FDV/MC</th>
-                    <th onclick="sortTable('volume_24h')">24h Vol</th>
-                    <th onclick="sortTable('liquidity')">Liquidity</th>
-                    <th onclick="sortTable('change_5m')">5m</th>
-                    <th onclick="sortTable('change_1h')">1h</th>
-                    <th onclick="sortTable('change_6h')">6h</th>
-                    <th onclick="sortTable('change_24h')">24h</th>
+                    <th onclick="sortTable('earnings_usd')" title="Total lifetime earnings from royalties">Earnings<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('github_stars')" title="GitHub repository stars">⭐ Stars<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('twitter_followers')" title="Twitter/X followers">🐦 Followers<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('pair_age')" title="Time since trading pair was created on DEX">Pair Age<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('price')" title="Current token price in USD">Price<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('fdv')" title="Fully Diluted Valuation / Market Cap">FDV/MC<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('volume_24h')" title="24-hour trading volume">24h Vol<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('liquidity')" title="Total liquidity in USD">Liquidity<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_5m')" title="Price change in last 5 minutes">5m<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_1h')" title="Price change in last hour">1h<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_6h')" title="Price change in last 6 hours">6h<span class="sort-indicator">↕</span></th>
+                    <th onclick="sortTable('change_24h')" title="Price change in last 24 hours">24h<span class="sort-indicator">↕</span></th>
                 </tr>
             </thead>
             <tbody id="token-body">
@@ -277,7 +771,13 @@
         </table>
     </div>
 
-    <div id="total-earnings" class="total-earnings"></div>
+    <div class="social-metrics">
+        <h3>📊 Social Popularity Metrics</h3>
+        <div id="github-stars-chart" class="github-chart">
+            <div class="loading">Loading GitHub data...</div>
+        </div>
+        <div id="github-stats" class="github-stats-grid"></div>
+    </div>
 
     <footer class="footer">
         Data from DexScreener API & Bags.fm API | Updates every 30 minutes via GitHub Actions | DYOR - crypto is volatile
@@ -329,10 +829,12 @@
                 
                 renderSummary(data.summary);
                 tokenData = data.tokens;
+                renderGitHubChart();
                 sortAndRender();
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.getElementById('summary').innerHTML = '<div class="loading">Error loading data. Please refresh.</div>';
+                document.getElementById('summary').innerHTML = '<div class="error-message">Error loading data. Please refresh the page or try again later.</div>';
+                document.getElementById('token-body').innerHTML = '<tr><td colspan="14" class="error-message">Unable to load token data</td></tr>';
             }
         }
 
@@ -372,8 +874,7 @@
         }
 
         function sortAndRender() {
-            const minVolume = parseFloat(document.getElementById('volume-filter').value) || 0;
-            let filtered = tokenData.filter(t => t.volume_24h >= minVolume);
+            let filtered = tokenData;
             
             filtered.sort((a, b) => {
                 let aVal = a[currentSort.field];
@@ -389,6 +890,20 @@
                 return 0;
             });
             
+            // Update sort indicators
+            document.querySelectorAll('th').forEach(th => {
+                const indicators = th.querySelectorAll('.sort-indicator');
+                indicators.forEach(ind => {
+                    if (th.getAttribute('onclick') && th.getAttribute('onclick').includes(currentSort.field)) {
+                        ind.textContent = currentSort.asc ? '↑' : '↓';
+                        ind.style.opacity = '1';
+                    } else {
+                        ind.textContent = '↕';
+                        ind.style.opacity = '0.5';
+                    }
+                });
+            });
+            
             renderTable(filtered);
         }
 
@@ -396,8 +911,7 @@
             const tbody = document.getElementById('token-body');
             
             if (tokens.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="14" class="loading">No tokens match the filter criteria.</td></tr>';
-                document.getElementById('total-earnings').textContent = '';
+                tbody.innerHTML = '<tr><td colspan="16" class="loading">No token data available.</td></tr>';
                 return;
             }
             
@@ -417,6 +931,8 @@
                             ${t.url ? `<a href="${t.url}" target="_blank">DEX</a>` : ''}
                         </td>
                         <td>${t.earnings_usd > 0 ? formatNumber(t.earnings_usd) : 'N/A'}</td>
+                        <td>${t.github_stars > 0 ? t.github_stars.toLocaleString() : 'N/A'}</td>
+                        <td>${t.twitter_followers > 0 ? `${t.twitter_followers.toLocaleString()}${!t.twitter_official ? ' <span style="font-size:0.7rem;color:var(--text-secondary);" title="Unofficial source">(unofficial)</span>' : ''}` : 'N/A'}</td>
                         <td>${t.pair_age}</td>
                         <td>${formatPrice(t.price)}</td>
                         <td>${formatNumber(t.fdv)}</td>
@@ -430,15 +946,84 @@
                 `;
             }).join('');
             
-            document.getElementById('total-earnings').textContent = `Total Earnings: ${formatNumber(totalEarnings)}`;
+            // Update total earnings header
+            document.getElementById('total-earnings-header').querySelector('.value').textContent = formatNumber(totalEarnings);
         }
 
-        function applyFilter() {
-            sortAndRender();
+        function toggleAbout() {
+            const content = document.getElementById('about-content');
+            const arrow = document.getElementById('about-arrow');
+            content.classList.toggle('show');
+            arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
         }
 
-        function refreshData() {
-            loadData();
+        function renderGitHubChart() {
+            const chartContainer = document.getElementById('github-stars-chart');
+            const statsContainer = document.getElementById('github-stats');
+            
+            // Filter tokens with GitHub data
+            const tokensWithGitHub = tokenData.filter(t => t.github_stars > 0);
+            
+            if (tokensWithGitHub.length === 0) {
+                chartContainer.innerHTML = '<div class="loading">GitHub data not available</div>';
+                statsContainer.innerHTML = '';
+                return;
+            }
+            
+            // Sort by stars
+            tokensWithGitHub.sort((a, b) => b.github_stars - a.github_stars);
+            const maxStars = Math.max(...tokensWithGitHub.map(t => t.github_stars));
+            
+            // Render stars comparison chart
+            chartContainer.innerHTML = tokensWithGitHub.map(t => {
+                const width = maxStars > 0 ? (t.github_stars / maxStars) * 100 : 0;
+                return `
+                    <div class="github-bar">
+                        <div class="github-bar-label">${t.name}</div>
+                        <div class="github-bar-container">
+                            <div class="github-bar-fill" style="width: ${width}%">
+                                ${t.github_stars > 0 ? t.github_stars.toLocaleString() : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Render stats grid
+            statsContainer.innerHTML = tokensWithGitHub.map(t => `
+                <div class="github-stat-card">
+                    <div class="label">${t.name}</div>
+                    <div class="value">⭐ ${t.github_stars.toLocaleString()}</div>
+                    <div style="margin-top: 8px; font-size: 0.8rem; color: var(--text-secondary);">
+                        🍴 ${t.github_forks.toLocaleString()} forks
+                        ${t.github_contributors > 0 ? ` • 👥 ${t.github_contributors} contributors` : ''}
+                        ${t.github_recent_commits > 0 ? ` • 📝 ${t.github_recent_commits} commits (30d)` : ''}
+                        ${t.github_open_issues > 0 ? ` • 🐛 ${t.github_open_issues} issues` : ''}
+                        ${t.github_open_prs > 0 ? ` • 🔀 ${t.github_open_prs} PRs` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add Reddit and HN mentions
+            const allTokens = tokenData.filter(t => t.reddit_mentions > 0 || t.hn_mentions > 0);
+            if (allTokens.length > 0) {
+                statsContainer.innerHTML += `
+                    <div style="grid-column: 1 / -1; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                        <h4 style="color: var(--text-primary); margin-bottom: 15px; font-size: 1rem;">Community Mentions</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            ${allTokens.map(t => `
+                                <div class="github-stat-card">
+                                    <div class="label">${t.name}</div>
+                                    <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-secondary);">
+                                        ${t.reddit_mentions > 0 ? `🔴 Reddit: ${t.reddit_mentions} mentions` : ''}
+                                        ${t.hn_mentions > 0 ? `<br>🟠 HN: ${t.hn_mentions} mentions` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
         }
 
         loadData();
