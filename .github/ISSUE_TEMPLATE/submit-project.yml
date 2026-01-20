@@ -101,9 +101,27 @@ body:
   - type: input
     id: token_address
     attributes:
-      label: Token Contract Address
-      description: "Solana token address for verification"
-      placeholder: "..."
+      label: Token Mint Address
+      description: "Solana token mint address (for earnings lookup)"
+      placeholder: "e.g., 7pskt3A1Zsjhngazam7vHWjWHnfgiRump916Xj7ABAGS"
+    validations:
+      required: true
+
+  - type: input
+    id: bags_url
+    attributes:
+      label: Bags.fm URL
+      description: "Full URL to the token on Bags.fm"
+      placeholder: "https://bags.fm/..."
+    validations:
+      required: true
+
+  - type: input
+    id: dexscreener_pair
+    attributes:
+      label: DexScreener Pair Address
+      description: "The pair address from DexScreener (find it in the URL after /solana/)"
+      placeholder: "e.g., FiNu5nSFwvjQbAFDESxDxvLhQJa3H7QYBrLUqFRB27v9"
     validations:
       required: true
 

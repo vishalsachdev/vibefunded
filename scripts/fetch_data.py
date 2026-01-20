@@ -25,7 +25,7 @@ TOKENS = {
         "creator": "Geoffrey Huntley",
         "social": "https://x.com/geoffreyhuntley",
         "social_handle": "@geoffreyhuntley",
-        "project_url": "https://ralphcoin.org/",
+        "project_url": "https://github.com/ghuntley/how-to-ralph-wiggum",
         "bags_url": "https://bags.fm/CxWPdDBqxVo3fnTMRTvNuSrd4gkp78udSrFvkVDBAGS",
         "token_mint": "CxWPdDBqxVo3fnTMRTvNuSrd4gkp78udSrFvkVDBAGS",
         "description": "Autonomous AI coding loops; royalties support open AI research and esoteric experiments.",
@@ -44,16 +44,38 @@ TOKENS = {
     },
     "LEON": {
         "name": "LEON AI",
-        "creator": "Gren Louis",
+        "creator": "Louis Grenard",
         "social": "https://x.com/grenlouis",
         "social_handle": "@grenlouis",
-        "project_url": "https://github.com/leon-ai",
+        "project_url": "https://github.com/leon-ai/leon",
         "bags_url": "https://bags.fm/Fnmq5udTPPkxGjw8nDtnRsjJWfHfdNmsfKGLhUerBAGS",
         "token_mint": "Fnmq5udTPPkxGjw8nDtnRsjJWfHfdNmsfKGLhUerBAGS",
         "description": "Open-source personal assistant; royalties support ongoing AI development.",
         "pair_address": "GZUPT46aogt2j3HFZiBa4bikNx1K4f525B9hAsTBGLA7"
     }
 }
+
+def load_existing_data():
+    """Load existing data.json to preserve manually-updated fields like twitter_followers"""
+    try:
+        with open("data.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
+    except Exception as e:
+        print(f"Warning: Error loading existing data.json: {e}")
+        return None
+
+def get_existing_twitter_followers(existing_data):
+    """Extract twitter follower counts from existing data"""
+    if not existing_data or "tokens" not in existing_data:
+        return {}
+    followers = {}
+    for token in existing_data.get("tokens", []):
+        ticker = token.get("ticker", "").replace("$", "")
+        if ticker and token.get("twitter_followers", 0) > 0:
+            followers[ticker] = token.get("twitter_followers", 0)
+    return followers
 
 def fetch_sol_price():
     try:
@@ -259,31 +281,27 @@ def fetch_hn_mentions(project_name, ticker):
         print(f"  Error fetching HN mentions: {e}")
         return 0
 
-def fetch_twitter_followers(social_url, social_handle, project_name, ticker, dexscreener_url):
-    """Try to get Twitter followers - check creator profile first, then DexScreener"""
-    # Twitter API v2 requires authentication, so we can't easily fetch follower counts
-    # For now, we'll mark the source and note if it's from creator profile (official) or DexScreener (unofficial)
-    # In the future, this could be enhanced with Twitter API integration
-    
+def fetch_twitter_followers(social_url, social_handle, project_name, ticker, dexscreener_url, existing_followers):
+    """Get Twitter followers - preserves existing values from data.json (updated by agent)"""
+    # Strip $ from ticker if present
+    clean_ticker = ticker.replace("$", "")
+
     result = {
-        "followers": 0,
+        "followers": existing_followers.get(clean_ticker, 0),
         "source": "none",
         "official": False
     }
-    
+
     # If we have a social URL from the creator profile, mark it as official
     if social_url and ("twitter.com" in social_url or "x.com" in social_url):
         result["source"] = "creator_profile"
         result["official"] = True
-        # Note: Follower count would need Twitter API to fetch
-        # For now, we'll leave it at 0 and mark it as needing manual entry or API integration
-    
+
     # If we have DexScreener URL, we could try to scrape it, but that's complex
-    # For now, we'll just note that DexScreener might have Twitter links
     if dexscreener_url and result["source"] == "none":
         result["source"] = "dexscreener"
         result["official"] = False
-    
+
     return result
 
 def calculate_pair_age(pair_created_at):
@@ -308,12 +326,17 @@ def calculate_pair_age(pair_created_at):
         return "N/A"
 
 def main():
+    # Load existing data to preserve manually-updated fields
+    existing_data = load_existing_data()
+    twitter_followers = get_existing_twitter_followers(existing_data)
+    print(f"Loaded existing Twitter followers: {twitter_followers}")
+
     print("Fetching SOL price...")
     sol_price = fetch_sol_price()
     print(f"SOL price: ${sol_price}")
-    
+
     token_data = []
-    
+
     for ticker, info in TOKENS.items():
         print(f"Fetching data for {ticker}...")
         pair_address = info.get("pair_address")
@@ -334,7 +357,8 @@ def main():
             info.get("social_handle", ""),
             info.get("name", ""),
             ticker,
-            pair.get("url", "") if pair else ""
+            pair.get("url", "") if pair else "",
+            twitter_followers
         )
         
         if pair:
@@ -435,11 +459,29 @@ def main():
     }
     
     os.makedirs("public", exist_ok=True)
-    
+    os.makedirs("data/history", exist_ok=True)
+
+    # Save current data
     with open("public/data.json", "w") as f:
         json.dump(output, f, indent=2)
-    
+
+    # Also save to root data.json for consistency
+    with open("data.json", "w") as f:
+        json.dump(output, f, indent=2)
+
+    # Save historical snapshot with timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    history_file = f"data/history/{timestamp}.json"
+    with open(history_file, "w") as f:
+        json.dump(output, f, indent=2)
+
+    # Append to daily aggregated history file for easier analysis
+    daily_file = f"data/history/{datetime.now().strftime('%Y-%m-%d')}.jsonl"
+    with open(daily_file, "a") as f:
+        f.write(json.dumps(output) + "\n")
+
     print(f"\nData saved to public/data.json")
+    print(f"Historical snapshot saved to {history_file}")
     print(f"Total tokens: {len(token_data)}")
     print(f"Active tokens: {len(active_tokens)}")
     print(f"Total earnings: ${total_earnings:,.0f}")
