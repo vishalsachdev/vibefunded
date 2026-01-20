@@ -206,6 +206,10 @@ This model is not without serious concerns.
 
 The memecoin royalty model represents an experiment in redirecting speculative capital toward public goods. The early results are striking: $600,000 in earnings, genuine projects receiving genuine funding, creators freed from grant applications and corporate negotiations.
 
+The competitive response came quickly. On January 19, 2026—just weeks after Bags.fm's creator-funded projects began generating headlines—Pump.fun announced a $3,000,000 "Build in Public" hackathon backed by "Pump Fund," a new investment arm.[^22] The framing was telling: instead of judging projects through traditional VC criteria, participants would "tokenize" their work and let the market validate their ideas. Pump.fun, the older and more established memecoin launchpad, was adapting its model in direct response to Bags.fm's success with OSS and AI creators.
+
+The announcement validates the core insight: speculative capital *can* be redirected toward building. When a platform that processed hundreds of millions in fees from joke tokens and celebrity cash-grabs pivots toward funding "projects that people actually want," something has shifted in how the market perceives value creation.
+
 But the experiment is young—measured in weeks, not years. Whether this becomes a durable funding mechanism or a speculative bubble that happened to fund some interesting work depends on factors not yet visible: regulatory responses, platform competition, creator behavior under sustained pressure, and the simple question of whether trading interest persists beyond launch excitement.
 
 For business observers, the case illustrates how platform design can reshape incentive structures in unexpected ways. Bags.fm's modification to the standard memecoin launchpad—adding perpetual royalties—transformed speculation from extraction to patronage. The technical change was small; the economic implications were profound.
@@ -351,3 +355,5 @@ This research benefits from community contributions. Each new project helps buil
 [^20]: "Tech giants rush to sponsor Tailwind CSS after devastating layoffs." PPC Land, January 2026. https://ppc.land/tech-giants-rush-to-sponsor-tailwind-css-after-devastating-layoffs/
 
 [^21]: "Google, Vercel, Lovable & Others Come Forward To Sponsor Tailwind After Company Reveals 75% AI-Related Layoffs." Office Chai, January 2026. https://officechai.com/ai/google-vercel-lovable-others-come-forward-to-sponsor-tailwind-after-company-reveals-75-ai-related-layoffs/
+
+[^22]: Pump.fun. "$3,000,000 Build in Public Hackathon" announcement thread. X/Twitter, January 19, 2026. https://x.com/Pumpfun/status/2013386533626163589
