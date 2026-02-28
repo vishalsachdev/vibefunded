@@ -117,7 +117,7 @@ BAGS_API_KEY=xxx  # Required for earnings data from Bags.fm
 
 ## Scheduled Updates
 
-The script runs via GitHub Actions on a schedule. Twitter followers should be updated periodically by an agent using Claude in Chrome.
+The 30-min auto-fetch cron is disabled (manual `workflow_dispatch` only). Deploy-to-Pages still triggers on push. Twitter followers should be updated periodically by an agent using Claude in Chrome.
 
 ## Roadmap
 
@@ -130,6 +130,7 @@ The script runs via GitHub Actions on a schedule. Twitter followers should be up
 
 | Date | Changes |
 |------|---------|
+| 2026-02-28 | Disabled 30-min cron in `update-data.yml` to reduce Actions usage; kept deploy-pages auto-trigger and manual dispatch |
 | 2026-01-21 | Added total SOL earnings metric to clarify USD fluctuation from SOL price changes; created `/add-token` skill for adding new tokens to dashboard |
 | 2026-01-20 | Redesigned dashboard UI: removed Social Popularity bar chart, added Project Activity & Community table, removed duplicate stars/followers from financial table, fixed LEON creator name in About section |
 | 2026-01-19 | Added $RALPH and $LEON GitHub stats, Twitter followers for all tokens, historical data tracking |
