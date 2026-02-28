@@ -1,15 +1,7 @@
 name: Update Token Data
 
 on:
-  schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - 'scripts/fetch_data.py'
-      - 'public/data.json'
+  workflow_dispatch:  # Manual trigger only — auto schedule disabled to reduce GitHub Actions costs
 
 jobs:
   update-data:
